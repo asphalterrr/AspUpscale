@@ -1197,12 +1197,17 @@ enhanceButton.addEventListener("click", async () => {
     setStatus("✓ Enhancement complete. Video ready!");
 
   } catch (error) {
-    console.error(error);
+  console.error("AspUpscale error:", error);
 
-    setStatus(
-      "❌ " + error.message +
-      " Try a shorter video or lower resolution."
-    );
+  const message =
+    error instanceof Error
+      ? error.message
+      : typeof error === "string"
+        ? error
+        : JSON.stringify(error) || "Unknown processing error";
+
+  setStatus("❌ Processing failed: " + message);
+}
   } finally {
     if (engine) {
       try {
