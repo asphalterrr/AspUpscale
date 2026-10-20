@@ -2,147 +2,262 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UltraScale 4K</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080914">
+
+<title>AspUpscale — Video Enhancer</title>
 
 <style>
 * {
   box-sizing: border-box;
 }
 
+:root {
+  --bg: #080914;
+  --card: #121527;
+  --purple: #995cff;
+  --cyan: #36e4ff;
+  --text: #f5f5ff;
+  --muted: #9399b5;
+}
+
 body {
   margin: 0;
-  background: #09090f;
-  color: white;
-  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  font-family: system-ui, Arial, sans-serif;
+  background:
+    radial-gradient(circle at 50% 0%, #262052 0%, transparent 45%),
+    var(--bg);
+  color: var(--text);
 }
 
 header {
-  padding: 25px;
   text-align: center;
-  background: #11111c;
-  border-bottom: 1px solid #29293d;
-}
-
-h1 {
-  font-size: 35px;
-  margin: 0;
+  padding: 42px 20px 25px;
 }
 
 .logo {
-  color: #9b6dff;
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+}
+
+.logo span {
+  color: var(--cyan);
 }
 
 .subtitle {
-  color: #aaa;
-  margin-top: 10px;
+  color: var(--muted);
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.badge {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 7px 14px;
+  border-radius: 30px;
+  background: #252044;
+  color: #c9adff;
+  font-size: 12px;
+  border: 1px solid #49377a;
 }
 
 .container {
-  max-width: 750px;
-  margin: 45px auto;
-  padding: 25px;
+  width: min(94%, 520px);
+  margin: 20px auto 50px;
 }
 
 .card {
-  background: #171722;
-  padding: 30px;
-  border-radius: 18px;
-  border: 1px solid #303044;
+  padding: 22px;
+  background: rgba(18,21,39,.94);
+  border: 1px solid #303553;
+  border-radius: 22px;
+  box-shadow: 0 15px 60px #0008;
 }
 
 .upload {
-  border: 2px dashed #8055ff;
-  padding: 45px 20px;
+  padding: 35px 16px;
+  border: 2px dashed #7555d6;
+  border-radius: 18px;
+  background: #1a1933;
   text-align: center;
-  border-radius: 15px;
   cursor: pointer;
-  background: #1d1b2d;
 }
 
-.upload:hover {
-  background: #292342;
+.upload:active {
+  transform: scale(.99);
+}
+
+.upload-icon {
+  font-size: 46px;
 }
 
 .upload h2 {
-  margin-bottom: 8px;
+  font-size: 19px;
+  margin: 12px 0 7px;
 }
 
 .upload p {
-  color: #aaa;
+  color: var(--muted);
+  font-size: 13px;
 }
 
-input[type="file"] {
+input[type=file] {
   display: none;
 }
 
 video {
-  width: 100%;
-  margin-top: 25px;
-  border-radius: 12px;
   display: none;
-}
-
-label {
-  display: block;
-  margin-top: 25px;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-select {
   width: 100%;
-  padding: 15px;
-  border-radius: 10px;
-  border: 1px solid #444;
-  background: #242436;
-  color: white;
-  font-size: 16px;
+  margin-top: 20px;
+  border-radius: 13px;
+  background: black;
+  max-height: 280px;
 }
 
-button {
-  width: 100%;
-  margin-top: 25px;
-  padding: 17px;
-  border: none;
+.file-info {
+  margin-top: 15px;
+  color: var(--cyan);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.section-title {
+  margin: 25px 0 12px;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.resolutions {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 10px;
+}
+
+.resolution {
+  padding: 17px 10px;
+  background: #1b2036;
+  border: 1px solid #343b5d;
   border-radius: 12px;
-  background: linear-gradient(90deg, #754bff, #b65cff);
   color: white;
-  font-size: 18px;
-  font-weight: bold;
+  font-weight: 700;
   cursor: pointer;
 }
 
-button:hover {
-  opacity: 0.9;
+.resolution.active {
+  border-color: var(--cyan);
+  background: #182c43;
+  box-shadow: 0 0 14px #36e4ff25;
 }
 
-button:disabled {
-  opacity: 0.5;
+.resolution small {
+  display: block;
+  margin-top: 5px;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.setting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #292e47;
+}
+
+.setting span {
+  font-size: 14px;
+}
+
+.setting select {
+  padding: 9px;
+  border-radius: 8px;
+  background: #222943;
+  color: white;
+  border: 1px solid #414b70;
+}
+
+.main-button {
+  width: 100%;
+  padding: 18px;
+  margin-top: 25px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(110deg,#7655ff,#b44dff,#37cfff);
+  color: white;
+  font-size: 17px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 8px 30px #8555ff45;
+}
+
+.main-button:disabled {
+  opacity: .45;
   cursor: not-allowed;
 }
 
-#status {
-  text-align: center;
-  margin-top: 20px;
-  color: #bca3ff;
+.progress-box {
+  display: none;
+  margin-top: 25px;
 }
 
-#download {
-  display: none;
+.progress-track {
+  height: 10px;
+  background: #292e48;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg,#875cff,#36e4ff);
+  transition: width .2s;
+}
+
+.progress-text {
+  margin-top: 10px;
   text-align: center;
+  color: var(--cyan);
+  font-size: 13px;
+}
+
+.status {
+  text-align: center;
+  margin-top: 18px;
+  color: #c8b6ff;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.download {
+  display: none;
   margin-top: 20px;
-  padding: 15px;
-  border-radius: 10px;
-  background: #25213b;
-  color: #c9b5ff;
+  padding: 17px;
+  text-align: center;
+  border-radius: 13px;
+  background: #173d39;
+  border: 1px solid #2bd8b4;
+  color: #6fffe0;
   text-decoration: none;
+  font-weight: bold;
+}
+
+.note {
+  margin-top: 20px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
 }
 
 footer {
   text-align: center;
-  color: #777;
-  padding: 30px;
+  padding: 25px;
+  font-size: 12px;
+  color: #777f9c;
 }
 </style>
 </head>
@@ -150,17 +265,23 @@ footer {
 <body>
 
 <header>
-  <h1>⚡ Ultra<span class="logo">Scale</span> 4K</h1>
-  <p class="subtitle">Professional Video Resolution Upscaler</p>
+  <div class="logo">Asp<span>Upscale</span></div>
+  <div class="subtitle">
+    Next Generation Video Enhancement
+  </div>
+  <div class="badge">
+    ⚡ ON-DEVICE PROCESSING
+  </div>
 </header>
 
-<div class="container">
+<main class="container">
   <div class="card">
 
-    <div class="upload" id="dropZone">
-      <h2>🎬 Upload Your Video</h2>
-      <p>Click here to select a video</p>
-      <p>MP4 • MOV • WebM</p>
+    <div class="upload" id="uploadZone">
+      <div class="upload-icon">🎬</div>
+      <h2>Upload Your Video</h2>
+      <p>Tap to choose a video from your phone</p>
+      <p>Maximum duration: 1 minute 30 seconds</p>
     </div>
 
     <input
@@ -169,132 +290,344 @@ footer {
       accept="video/*"
     >
 
-    <video id="preview" controls></video>
+    <video id="preview" controls playsinline></video>
 
-    <label for="resolution">Output Resolution</label>
+    <div class="file-info" id="fileInfo"></div>
 
-    <select id="resolution">
-      <option value="1080">1080p Full HD</option>
-      <option value="1440">1440p QHD</option>
-      <option value="2160" selected>2160p 4K UHD</option>
-    </select>
+    <div class="section-title">
+      ✨ Choose Output Resolution
+    </div>
 
-    <label for="quality">Video Quality</label>
+    <div class="resolutions">
+      <button class="resolution" data-height="720">
+        720P
+        <small>HD</small>
+      </button>
 
-    <select id="quality">
-      <option value="23">Standard</option>
-      <option value="18" selected>High Quality</option>
-      <option value="16">Ultra Quality</option>
-    </select>
+      <button class="resolution active" data-height="1080">
+        1080P
+        <small>Full HD</small>
+      </button>
 
-    <button id="upscaleButton">
-      ✨ Upscale Video
+      <button class="resolution" data-height="1440">
+        1440P
+        <small>Quad HD</small>
+      </button>
+
+      <button class="resolution" data-height="2160">
+        4K
+        <small>Ultra HD</small>
+      </button>
+    </div>
+
+    <div class="section-title">
+      🎨 Enhancement Settings
+    </div>
+
+    <div class="setting">
+      <span>Sharpness</span>
+      <select id="sharpness">
+        <option value="0">Off</option>
+        <option value="0.5" selected>Balanced</option>
+        <option value="1">Strong</option>
+      </select>
+    </div>
+
+    <div class="setting">
+      <span>Encoding Quality</span>
+      <select id="quality">
+        <option value="28">Standard</option>
+        <option value="23" selected>High</option>
+        <option value="18">Maximum</option>
+      </select>
+    </div>
+
+    <button class="main-button" id="upscaleButton">
+      ⚡ ENHANCE VIDEO
     </button>
 
-    <div id="status"></div>
+    <div class="progress-box" id="progressBox">
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-text" id="progressText">
+        Preparing...
+      </div>
+    </div>
 
-    <a id="download">
-      ⬇ Download Enhanced Video
+    <div class="status" id="status"></div>
+
+    <a class="download" id="download">
+      ⬇ DOWNLOAD ENHANCED VIDEO
     </a>
 
+    <div class="note">
+      🔒 Your video is processed locally in your browser.
+      It is not uploaded to our server.
+      <br><br>
+      Non-AI video scaling • Maximum 90 seconds
+    </div>
+
   </div>
-</div>
+</main>
 
 <footer>
-  UltraScale 4K • Video Enhancement Studio
+  © AspUpscale • Mobile Video Studio
 </footer>
 
-<script>
+<script type="module">
+
+import { FFmpeg } from
+  "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/index.js";
+
+import { toBlobURL } from
+  "https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/dist/esm/index.js";
+
 const input = document.getElementById("videoInput");
 const preview = document.getElementById("preview");
+const uploadZone = document.getElementById("uploadZone");
+const fileInfo = document.getElementById("fileInfo");
 const button = document.getElementById("upscaleButton");
 const status = document.getElementById("status");
 const download = document.getElementById("download");
-const dropZone = document.getElementById("dropZone");
+const progressBox = document.getElementById("progressBox");
+const progressFill = document.getElementById("progressFill");
+const progressText = document.getElementById("progressText");
 
-let previewURL = null;
-let downloadURL = null;
+let selectedFile = null;
+let selectedHeight = 1080;
+let ffmpeg = null;
+let videoURL = null;
+let outputURL = null;
 
-dropZone.onclick = () => input.click();
+uploadZone.addEventListener("click", () => {
+  input.click();
+});
 
-input.onchange = () => {
+document.querySelectorAll(".resolution").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".resolution")
+      .forEach(b => b.classList.remove("active"));
+
+    btn.classList.add("active");
+    selectedHeight = Number(btn.dataset.height);
+  });
+});
+
+function clearVideo() {
+  selectedFile = null;
+  input.value = "";
+  preview.pause();
+  preview.removeAttribute("src");
+  preview.load();
+  preview.style.display = "none";
+  fileInfo.textContent = "";
+
+  if (videoURL) {
+    URL.revokeObjectURL(videoURL);
+    videoURL = null;
+  }
+}
+
+input.addEventListener("change", async () => {
   const file = input.files[0];
 
   if (!file) return;
 
-  if (previewURL) {
-    URL.revokeObjectURL(previewURL);
+  clearVideo();
+
+  // Assign after clearVideo resets the input.
+  selectedFile = file;
+
+  if (outputURL) {
+    URL.revokeObjectURL(outputURL);
+    outputURL = null;
   }
 
-  previewURL = URL.createObjectURL(file);
-
-  preview.src = previewURL;
-  preview.style.display = "block";
-
-  status.textContent = "Selected: " + file.name;
   download.style.display = "none";
-};
+  progressBox.style.display = "none";
+  status.textContent = "Checking video duration...";
 
-button.onclick = async () => {
-  const file = input.files[0];
+  videoURL = URL.createObjectURL(file);
+  preview.src = videoURL;
 
-  if (!file) {
-    alert("Please upload a video first.");
+  try {
+    const duration = await new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        reject(new Error("Could not read video duration."));
+      }, 15000);
+
+      preview.onloadedmetadata = () => {
+        clearTimeout(timeout);
+        resolve(preview.duration);
+      };
+
+      preview.onerror = () => {
+        clearTimeout(timeout);
+        reject(new Error("Unsupported video format."));
+      };
+    });
+
+    if (!Number.isFinite(duration) || duration <= 0) {
+      throw new Error("Invalid video duration.");
+    }
+
+    if (duration > 90) {
+      throw new Error(
+        "Videos must be 1 minute and 30 seconds or shorter."
+      );
+    }
+
+    preview.style.display = "block";
+
+    fileInfo.textContent =
+      file.name + " • " +
+      duration.toFixed(1) + " seconds • " +
+      (file.size / 1024 / 1024).toFixed(1) + " MB";
+
+    status.textContent = "✅ Video ready to enhance!";
+
+  } catch (error) {
+    clearVideo();
+    status.textContent = "❌ " + error.message;
+  }
+});
+
+async function loadEngine() {
+  if (ffmpeg) return ffmpeg;
+
+  status.textContent = "Loading video processing engine...";
+
+  const engine = new FFmpeg();
+
+  engine.on("progress", ({ progress }) => {
+    const percent = Math.max(
+      0,
+      Math.min(99, Math.round(progress * 100))
+    );
+
+    progressFill.style.width = percent + "%";
+    progressText.textContent = percent + "% processed";
+  });
+
+  const baseURL =
+    "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd";
+
+  await engine.load({
+    coreURL: await toBlobURL(
+      `${baseURL}/ffmpeg-core.js`,
+      "text/javascript"
+    ),
+    wasmURL: await toBlobURL(
+      `${baseURL}/ffmpeg-core.wasm`,
+      "application/wasm"
+    )
+  });
+
+  ffmpeg = engine;
+  return engine;
+}
+
+button.addEventListener("click", async () => {
+  if (!selectedFile) {
+    status.textContent = "❌ Upload a valid video first.";
     return;
   }
 
-  const resolution =
-    document.getElementById("resolution").value;
-
-  const quality =
-    document.getElementById("quality").value;
-
-  const formData = new FormData();
-
-  formData.append("video", file);
-  formData.append("resolution", resolution);
-  formData.append("quality", quality);
-
   button.disabled = true;
-  status.textContent = "⏳ Upscaling video... Please wait.";
+  progressBox.style.display = "block";
+  progressFill.style.width = "0%";
+  progressText.textContent = "Preparing...";
   download.style.display = "none";
 
   try {
-    const response = await fetch("/upscale", {
-      method: "POST",
-      body: formData
-    });
+    const engine = await loadEngine();
 
-    if (!response.ok) {
-      let message = "Upscaling failed.";
+    const sharpness =
+      document.getElementById("sharpness").value;
 
-      try {
-        const error = await response.json();
-        message = error.error || message;
-      } catch {}
+    const quality =
+      document.getElementById("quality").value;
 
-      throw new Error(message);
+    const inputName = "input_video";
+    const outputName = "enhanced.mp4";
+
+    status.textContent = "Reading video...";
+
+    await engine.writeFile(
+      inputName,
+      new Uint8Array(await selectedFile.arrayBuffer())
+    );
+
+    let filter =
+      `scale=-2:${selectedHeight}:flags=lanczos,setsar=1`;
+
+    if (Number(sharpness) > 0) {
+      filter += `,unsharp=5:5:${sharpness}:5:5:0`;
     }
 
-    const blob = await response.blob();
+    status.textContent =
+      "⚡ Enhancing video. Keep this page open.";
 
-    if (downloadURL) {
-      URL.revokeObjectURL(downloadURL);
+    const exitCode = await engine.exec([
+      "-i", inputName,
+      "-vf", filter,
+      "-c:v", "libx264",
+      "-preset", "ultrafast",
+      "-crf", quality,
+      "-pix_fmt", "yuv420p",
+      "-c:a", "aac",
+      "-b:a", "128k",
+      "-movflags", "+faststart",
+      outputName
+    ]);
+
+    if (exitCode !== 0) {
+      throw new Error("Video encoding failed.");
     }
 
-    downloadURL = URL.createObjectURL(blob);
+    const data = await engine.readFile(outputName);
 
-    download.href = downloadURL;
-    download.download = "UltraScale_4K.mp4";
+    if (!data.length) {
+      throw new Error("The output video is empty.");
+    }
+
+    const blob = new Blob(
+      [data],
+      { type: "video/mp4" }
+    );
+
+    if (outputURL) {
+      URL.revokeObjectURL(outputURL);
+    }
+
+    outputURL = URL.createObjectURL(blob);
+
+    download.href = outputURL;
+    download.download = "AspUpscale_Enhanced.mp4";
     download.style.display = "block";
 
-    status.textContent = "✅ Video upscale completed!";
+    progressFill.style.width = "100%";
+    progressText.textContent = "100% complete";
+
+    status.textContent =
+      "✅ Enhancement complete! Your video is ready.";
+
+    await engine.deleteFile(inputName);
+    await engine.deleteFile(outputName);
+
   } catch (error) {
-    status.textContent = "❌ " + error.message;
+    console.error(error);
+
+    status.textContent =
+      "❌ Processing failed: " + error.message +
+      " Try a shorter video or lower resolution.";
+
   } finally {
     button.disabled = false;
   }
-};
+});
+
 </script>
 
 </body>
