@@ -2,291 +2,726 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#080914">
-
-<title>AspUpscale — Video Enhancer</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050510">
+<title>AspUpscale | NEON X</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --bg: #080914;
-  --card: #121527;
-  --purple: #995cff;
-  --cyan: #36e4ff;
-  --text: #f5f5ff;
-  --muted: #9399b5;
+  --bg:#050510;
+  --panel:rgba(16,19,40,.72);
+  --cyan:#00eaff;
+  --purple:#9b4dff;
+  --pink:#ff38cc;
+  --text:#f5f7ff;
+  --muted:#8993b5;
+  --border:rgba(130,150,255,.18);
+}
+
+* {
+  box-sizing:border-box;
+}
+
+html {
+  scroll-behavior:smooth;
 }
 
 body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: system-ui, Arial, sans-serif;
-  background:
-    radial-gradient(circle at 50% 0%, #262052 0%, transparent 45%),
-    var(--bg);
-  color: var(--text);
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+  overflow-x:hidden;
+  min-height:100vh;
 }
 
+button,select {
+  font:inherit;
+}
+
+button {
+  -webkit-tap-highlight-color:transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+select:focus-visible,
+.upload:focus-visible {
+  outline:2px solid var(--cyan);
+  outline-offset:4px;
+}
+
+/* ANIMATED BACKGROUND */
+
+.background {
+  position:fixed;
+  inset:0;
+  z-index:-3;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+.orb {
+  position:absolute;
+  width:420px;
+  height:420px;
+  border-radius:50%;
+  filter:blur(95px);
+  opacity:.28;
+  animation:float 13s ease-in-out infinite alternate;
+}
+
+.orb.one {
+  background:#6525ff;
+  top:-180px;
+  left:-180px;
+}
+
+.orb.two {
+  background:#00cfff;
+  right:-200px;
+  top:30%;
+  animation-delay:-5s;
+}
+
+.orb.three {
+  background:#ff21b5;
+  bottom:-200px;
+  left:10%;
+  animation-delay:-8s;
+}
+
+@keyframes float {
+  from {
+    transform:translate(0,0) scale(1);
+  }
+  to {
+    transform:translate(100px,80px) scale(1.3);
+  }
+}
+
+.grid {
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  background-image:
+    linear-gradient(#ffffff08 1px,transparent 1px),
+    linear-gradient(90deg,#ffffff08 1px,transparent 1px);
+  background-size:45px 45px;
+  mask-image:linear-gradient(to bottom,transparent,#000 40%,transparent);
+  pointer-events:none;
+}
+
+/* HEADER */
+
 header {
-  text-align: center;
-  padding: 42px 20px 25px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  max-width:1100px;
+  margin:auto;
+  padding:25px 20px;
 }
 
 .logo {
-  font-size: 36px;
-  font-weight: 900;
-  letter-spacing: -1.5px;
+  font-family:Orbitron,sans-serif;
+  font-weight:900;
+  font-size:clamp(19px,5vw,28px);
+  letter-spacing:-1px;
 }
 
 .logo span {
-  color: var(--cyan);
+  background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));
+  background-clip:text;
+  -webkit-background-clip:text;
+  color:transparent;
 }
 
-.subtitle {
-  color: var(--muted);
-  margin-top: 8px;
-  font-size: 14px;
+.online {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:11px;
+  color:#a4ffdf;
+  background:#102a2a;
+  padding:9px 12px;
+  border:1px solid #206c60;
+  border-radius:30px;
 }
 
-.badge {
-  display: inline-block;
-  margin-top: 16px;
-  padding: 7px 14px;
-  border-radius: 30px;
-  background: #252044;
-  color: #c9adff;
-  font-size: 12px;
-  border: 1px solid #49377a;
+.dot {
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#00ffba;
+  box-shadow:0 0 12px #00ffba;
+  animation:pulse 1.5s infinite;
 }
 
-.container {
-  width: min(94%, 520px);
-  margin: 20px auto 50px;
+@keyframes pulse {
+  50% {opacity:.35}
 }
 
-.card {
-  padding: 22px;
-  background: rgba(18,21,39,.94);
-  border: 1px solid #303553;
-  border-radius: 22px;
-  box-shadow: 0 15px 60px #0008;
+/* HERO */
+
+.hero {
+  max-width:950px;
+  margin:55px auto 35px;
+  padding:0 20px;
+  text-align:center;
+  animation:enter .8s ease both;
 }
+
+@keyframes enter {
+  from {
+    opacity:0;
+    transform:translateY(30px);
+  }
+  to {
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.eyebrow {
+  font-size:11px;
+  letter-spacing:4px;
+  color:var(--cyan);
+  margin-bottom:20px;
+}
+
+.hero h1 {
+  font-family:Orbitron,sans-serif;
+  font-size:clamp(30px,7vw,67px);
+  line-height:1.18;
+  margin:0;
+  font-weight:900;
+}
+
+.gradient {
+  background:linear-gradient(90deg,#c657ff,#00eaff,#8a65ff);
+  background-size:200%;
+  background-clip:text;
+  -webkit-background-clip:text;
+  color:transparent;
+  animation:gradientMove 5s linear infinite;
+}
+
+@keyframes gradientMove {
+  to {background-position:200%}
+}
+
+.hero p {
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.8;
+  max-width:540px;
+  margin:22px auto;
+}
+
+.pills {
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:9px;
+}
+
+.pill {
+  border:1px solid var(--border);
+  border-radius:30px;
+  padding:9px 13px;
+  font-size:11px;
+  background:#14182b;
+  color:#bfc8eb;
+}
+
+/* MAIN */
+
+main {
+  max-width:760px;
+  margin:35px auto 80px;
+  padding:0 15px;
+}
+
+.panel {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:22px;
+  margin-bottom:20px;
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  box-shadow:0 15px 55px #0006;
+  animation:enter .8s ease both;
+}
+
+.panel-title {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:Orbitron,sans-serif;
+  font-size:12px;
+  letter-spacing:1px;
+  margin-bottom:20px;
+}
+
+.panel-title span {
+  color:var(--cyan);
+}
+
+/* UPLOAD */
 
 .upload {
-  padding: 35px 16px;
-  border: 2px dashed #7555d6;
-  border-radius: 18px;
-  background: #1a1933;
-  text-align: center;
-  cursor: pointer;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:240px;
+  border:1px dashed #8064ff;
+  border-radius:20px;
+  background:
+    radial-gradient(circle at center,#38226055,transparent 70%),
+    #11152a;
+  text-align:center;
+  cursor:pointer;
+  overflow:hidden;
+  transition:.35s;
 }
 
-.upload:active {
-  transform: scale(.99);
+.upload:hover,
+.upload.dragging {
+  border-color:var(--cyan);
+  box-shadow:inset 0 0 45px #00eaff12,0 0 25px #8055ff22;
+  transform:translateY(-2px);
+}
+
+.upload::before {
+  content:"";
+  position:absolute;
+  inset:-100%;
+  background:conic-gradient(
+    transparent,
+    transparent,
+    #00eaff22,
+    transparent
+  );
+  animation:spin 9s linear infinite;
+  pointer-events:none;
+}
+
+@keyframes spin {
+  to {transform:rotate(360deg)}
+}
+
+.upload-content {
+  position:relative;
+  z-index:1;
+  padding:25px;
 }
 
 .upload-icon {
-  font-size: 46px;
+  display:grid;
+  place-items:center;
+  width:75px;
+  height:75px;
+  border-radius:22px;
+  margin:0 auto 20px;
+  background:linear-gradient(135deg,#7a42ff,#00cfff);
+  box-shadow:0 0 35px #8055ff70;
+  font-size:34px;
+  animation:bob 3s ease-in-out infinite;
+}
+
+@keyframes bob {
+  50% {transform:translateY(-8px)}
 }
 
 .upload h2 {
-  font-size: 19px;
-  margin: 12px 0 7px;
+  font-size:18px;
+  margin:0 0 10px;
 }
 
 .upload p {
-  color: var(--muted);
-  font-size: 13px;
+  font-size:12px;
+  color:var(--muted);
 }
 
 input[type=file] {
-  display: none;
+  display:none;
 }
 
 video {
-  display: none;
-  width: 100%;
-  margin-top: 20px;
-  border-radius: 13px;
-  background: black;
-  max-height: 280px;
+  width:100%;
+  max-height:350px;
+  margin-top:20px;
+  border-radius:15px;
+  background:black;
+  display:none;
 }
 
 .file-info {
-  margin-top: 15px;
-  color: var(--cyan);
-  font-size: 13px;
-  overflow-wrap: anywhere;
+  margin-top:15px;
+  font-size:12px;
+  color:var(--cyan);
+  overflow-wrap:anywhere;
 }
 
-.section-title {
-  margin: 25px 0 12px;
-  font-weight: 700;
-  font-size: 15px;
-}
+/* RESOLUTION */
 
 .resolutions {
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 10px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
 }
 
 .resolution {
-  padding: 17px 10px;
-  background: #1b2036;
-  border: 1px solid #343b5d;
-  border-radius: 12px;
-  color: white;
-  font-weight: 700;
-  cursor: pointer;
+  position:relative;
+  background:#171b32;
+  border:1px solid #333c63;
+  color:white;
+  border-radius:15px;
+  padding:20px 5px;
+  cursor:pointer;
+  transition:.3s;
 }
 
-.resolution.active {
-  border-color: var(--cyan);
-  background: #182c43;
-  box-shadow: 0 0 14px #36e4ff25;
+.resolution strong {
+  display:block;
+  font-family:Orbitron,sans-serif;
+  font-size:clamp(11px,3vw,17px);
 }
 
 .resolution small {
-  display: block;
-  margin-top: 5px;
-  font-size: 11px;
-  font-weight: 400;
-  color: var(--muted);
+  display:block;
+  margin-top:9px;
+  color:var(--muted);
+  font-size:9px;
 }
+
+.resolution:hover {
+  transform:translateY(-5px);
+  border-color:var(--purple);
+}
+
+.resolution.active {
+  border-color:var(--cyan);
+  background:linear-gradient(145deg,#202052,#102e43);
+  box-shadow:0 0 22px #00eaff30,inset 0 0 18px #00eaff12;
+}
+
+.resolution.active::after {
+  content:"✓";
+  position:absolute;
+  right:6px;
+  top:5px;
+  color:var(--cyan);
+  font-size:11px;
+}
+
+/* SETTINGS */
 
 .setting {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 0;
-  border-bottom: 1px solid #292e47;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:15px 0;
+  border-bottom:1px solid #ffffff12;
 }
 
-.setting span {
-  font-size: 14px;
+.setting:last-child {
+  border:0;
 }
 
-.setting select {
-  padding: 9px;
-  border-radius: 8px;
-  background: #222943;
-  color: white;
-  border: 1px solid #414b70;
+.setting-name {
+  font-size:13px;
+  font-weight:600;
 }
 
-.main-button {
-  width: 100%;
-  padding: 18px;
-  margin-top: 25px;
-  border: none;
-  border-radius: 14px;
-  background: linear-gradient(110deg,#7655ff,#b44dff,#37cfff);
-  color: white;
-  font-size: 17px;
-  font-weight: 900;
-  cursor: pointer;
-  box-shadow: 0 8px 30px #8555ff45;
+.setting-desc {
+  color:var(--muted);
+  font-size:10px;
+  margin-top:5px;
 }
 
-.main-button:disabled {
-  opacity: .45;
-  cursor: not-allowed;
+select {
+  background:#1b2340;
+  border:1px solid #37466d;
+  border-radius:10px;
+  padding:11px;
+  color:white;
+  max-width:150px;
 }
 
-.progress-box {
-  display: none;
-  margin-top: 25px;
+/* MAIN BUTTON */
+
+.enhance {
+  position:relative;
+  width:100%;
+  padding:21px;
+  border:0;
+  border-radius:17px;
+  font-family:Orbitron,sans-serif;
+  font-size:clamp(12px,3vw,16px);
+  font-weight:800;
+  letter-spacing:1px;
+  color:white;
+  cursor:pointer;
+  background:linear-gradient(100deg,#893bff,#c12aff,#00cfff);
+  background-size:200%;
+  box-shadow:0 0 30px #8e3bff55;
+  transition:.3s;
+  overflow:hidden;
+  animation:gradientMove 6s linear infinite;
 }
 
-.progress-track {
-  height: 10px;
-  background: #292e48;
-  border-radius: 20px;
-  overflow: hidden;
+.enhance:hover:not(:disabled) {
+  transform:translateY(-3px);
+  box-shadow:0 0 45px #994dff99;
+}
+
+.enhance:disabled {
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.enhance::after {
+  content:"";
+  position:absolute;
+  top:0;
+  left:-120%;
+  height:100%;
+  width:45%;
+  background:linear-gradient(90deg,transparent,#ffffff55,transparent);
+  transform:skewX(-25deg);
+  animation:shine 4s infinite;
+}
+
+@keyframes shine {
+  0%,60% {left:-120%}
+  100% {left:150%}
+}
+
+/* PROGRESS */
+
+.progress-panel {
+  display:none;
+  text-align:center;
+}
+
+.progress-ring {
+  --progress:0%;
+  width:145px;
+  height:145px;
+  margin:15px auto 25px;
+  border-radius:50%;
+  background:conic-gradient(
+    var(--cyan) var(--progress),
+    #292d4b var(--progress)
+  );
+  display:grid;
+  place-items:center;
+  box-shadow:0 0 30px #00eaff22;
+  transition:background .2s;
+}
+
+.progress-inner {
+  width:124px;
+  height:124px;
+  border-radius:50%;
+  background:#101428;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+}
+
+.progress-number {
+  font-family:Orbitron,sans-serif;
+  font-size:30px;
+  font-weight:800;
+}
+
+.progress-label {
+  font-size:10px;
+  color:var(--muted);
+  margin-top:5px;
+}
+
+.progress-bar {
+  width:100%;
+  height:7px;
+  border-radius:20px;
+  background:#262b4a;
+  overflow:hidden;
 }
 
 .progress-fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg,#875cff,#36e4ff);
-  transition: width .2s;
-}
-
-.progress-text {
-  margin-top: 10px;
-  text-align: center;
-  color: var(--cyan);
-  font-size: 13px;
+  width:0%;
+  height:100%;
+  background:linear-gradient(90deg,var(--purple),var(--cyan));
+  box-shadow:0 0 15px var(--cyan);
+  transition:width .2s;
 }
 
 .status {
-  text-align: center;
-  margin-top: 18px;
-  color: #c8b6ff;
-  font-size: 13px;
-  overflow-wrap: anywhere;
+  text-align:center;
+  font-size:12px;
+  line-height:1.7;
+  color:#b7c4ed;
+  margin-top:18px;
+  overflow-wrap:anywhere;
 }
+
+/* DOWNLOAD */
 
 .download {
-  display: none;
-  margin-top: 20px;
-  padding: 17px;
-  text-align: center;
-  border-radius: 13px;
-  background: #173d39;
-  border: 1px solid #2bd8b4;
-  color: #6fffe0;
-  text-decoration: none;
-  font-weight: bold;
+  display:none;
+  padding:19px;
+  margin-top:18px;
+  text-align:center;
+  text-decoration:none;
+  border-radius:15px;
+  color:#041e18;
+  background:linear-gradient(90deg,#00ffbf,#00dfff);
+  font-weight:800;
+  box-shadow:0 0 30px #00ffbf44;
+  transition:.3s;
 }
 
-.note {
-  margin-top: 20px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.6;
+.download:hover {
+  transform:translateY(-3px);
+}
+
+/* FEATURES */
+
+.features {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:25px;
+}
+
+.feature {
+  background:#11172a;
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:17px 10px;
+  text-align:center;
+}
+
+.feature-icon {
+  font-size:24px;
+  margin-bottom:10px;
+}
+
+.feature strong {
+  display:block;
+  font-size:10px;
+}
+
+.feature p {
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.5;
 }
 
 footer {
-  text-align: center;
-  padding: 25px;
-  font-size: 12px;
-  color: #777f9c;
+  text-align:center;
+  padding:25px;
+  color:#657091;
+  font-size:11px;
+}
+
+@media(max-width:430px) {
+  .panel {padding:17px}
+  .resolutions {gap:6px}
+  .resolution {padding:17px 3px}
+  .feature {padding:15px 5px}
+  .online {font-size:9px}
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *,
+  *::before,
+  *::after {
+    animation:none!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
 }
 </style>
 </head>
 
 <body>
 
+<div class="background">
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+  <div class="orb three"></div>
+</div>
+
+<div class="grid"></div>
+
 <header>
   <div class="logo">Asp<span>Upscale</span></div>
-  <div class="subtitle">
-    Next Generation Video Enhancement
-  </div>
-  <div class="badge">
-    ⚡ ON-DEVICE PROCESSING
+  <div class="online">
+    <div class="dot"></div>
+    LOCAL PROCESSING
   </div>
 </header>
 
-<main class="container">
-  <div class="card">
+<section class="hero">
+  <div class="eyebrow">NEXT GENERATION VIDEO STUDIO</div>
 
-    <div class="upload" id="uploadZone">
-      <div class="upload-icon">🎬</div>
-      <h2>Upload Your Video</h2>
-      <p>Tap to choose a video from your phone</p>
-      <p>Maximum duration: 1 minute 30 seconds</p>
+  <h1>
+    UNLOCK YOUR<br>
+    <span class="gradient">VIDEO QUALITY</span>
+  </h1>
+
+  <p>
+    Transform your videos with advanced non-AI scaling,
+    precision sharpening, and high-quality encoding.
+    All directly on your device.
+  </p>
+
+  <div class="pills">
+    <div class="pill">⚡ UP TO 4K</div>
+    <div class="pill">🔒 PRIVATE</div>
+    <div class="pill">🎬 NON-AI</div>
+    <div class="pill">📱 MOBILE READY</div>
+  </div>
+</section>
+
+<main>
+
+  <section class="panel">
+
+    <div class="panel-title">
+      <span>01 /</span> IMPORT MEDIA
+    </div>
+
+    <div
+      class="upload"
+      id="uploadZone"
+      role="button"
+      tabindex="0"
+      aria-label="Choose video"
+    >
+      <div class="upload-content">
+        <div class="upload-icon">↑</div>
+        <h2>DROP YOUR VIDEO HERE</h2>
+        <p>Tap to browse your device</p>
+        <p>Maximum duration: 90 seconds</p>
+      </div>
     </div>
 
     <input
-      type="file"
       id="videoInput"
+      type="file"
       accept="video/*"
     >
 
@@ -294,47 +729,65 @@ footer {
 
     <div class="file-info" id="fileInfo"></div>
 
-    <div class="section-title">
-      ✨ Choose Output Resolution
+  </section>
+
+  <section class="panel">
+
+    <div class="panel-title">
+      <span>02 /</span> OUTPUT RESOLUTION
     </div>
 
     <div class="resolutions">
+
       <button class="resolution" data-height="720">
-        720P
+        <strong>720P</strong>
         <small>HD</small>
       </button>
 
       <button class="resolution active" data-height="1080">
-        1080P
-        <small>Full HD</small>
+        <strong>1080P</strong>
+        <small>FULL HD</small>
       </button>
 
       <button class="resolution" data-height="1440">
-        1440P
-        <small>Quad HD</small>
+        <strong>1440P</strong>
+        <small>QHD</small>
       </button>
 
       <button class="resolution" data-height="2160">
-        4K
-        <small>Ultra HD</small>
+        <strong>4K</strong>
+        <small>ULTRA HD</small>
       </button>
+
     </div>
 
-    <div class="section-title">
-      🎨 Enhancement Settings
+  </section>
+
+  <section class="panel">
+
+    <div class="panel-title">
+      <span>03 /</span> ENHANCEMENT ENGINE
     </div>
 
     <div class="setting">
-      <span>Sharpness</span>
+      <div>
+        <div class="setting-name">✦ Sharpness</div>
+        <div class="setting-desc">Fine-tune edge clarity</div>
+      </div>
+
       <select id="sharpness">
         <option value="0">Off</option>
-        <option value="0.5" selected>Balanced</option>
-        <option value="1">Strong</option>
+        <option value="0.4" selected>Balanced</option>
+        <option value="0.8">Strong</option>
       </select>
     </div>
 
     <div class="setting">
-      <span>Encoding Quality</span>
+      <div>
+        <div class="setting-name">◈ Encoding Quality</div>
+        <div class="setting-desc">Control compression quality</div>
+      </div>
+
       <select id="quality">
         <option value="28">Standard</option>
         <option value="23" selected>High</option>
@@ -342,129 +795,220 @@ footer {
       </select>
     </div>
 
-    <button class="main-button" id="upscaleButton">
-      ⚡ ENHANCE VIDEO
-    </button>
-
-    <div class="progress-box" id="progressBox">
-      <div class="progress-track">
-        <div class="progress-fill" id="progressFill"></div>
+    <div class="setting">
+      <div>
+        <div class="setting-name">⬡ Output Format</div>
+        <div class="setting-desc">Video container</div>
       </div>
-      <div class="progress-text" id="progressText">
-        Preparing...
+
+      <select disabled>
+        <option>MP4</option>
+      </select>
+    </div>
+
+  </section>
+
+  <button class="enhance" id="enhanceButton">
+    ✦ INITIATE ENHANCEMENT →
+  </button>
+
+  <section class="panel progress-panel" id="progressPanel">
+
+    <div class="panel-title">
+      <span>04 /</span> PROCESSING STATUS
+    </div>
+
+    <div class="progress-ring" id="progressRing">
+      <div class="progress-inner">
+        <div class="progress-number" id="progressNumber">0%</div>
+        <div class="progress-label">PROCESSING</div>
       </div>
     </div>
 
-    <div class="status" id="status"></div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
 
-    <a class="download" id="download">
-      ⬇ DOWNLOAD ENHANCED VIDEO
-    </a>
+    <div class="status" id="status">
+      Initializing enhancement engine...
+    </div>
 
-    <div class="note">
-      🔒 Your video is processed locally in your browser.
-      It is not uploaded to our server.
-      <br><br>
-      Non-AI video scaling • Maximum 90 seconds
+  </section>
+
+  <a class="download" id="download">
+    ↓ DOWNLOAD ENHANCED VIDEO
+  </a>
+
+  <div class="features">
+
+    <div class="feature">
+      <div class="feature-icon">🔒</div>
+      <strong>PRIVATE</strong>
+      <p>Local video processing</p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-icon">⚡</div>
+      <strong>4K OUTPUT</strong>
+      <p>Device permitting</p>
+    </div>
+
+    <div class="feature">
+      <div class="feature-icon">⏱</div>
+      <strong>90 SEC MAX</strong>
+      <p>Short video support</p>
     </div>
 
   </div>
+
 </main>
 
 <footer>
-  © AspUpscale • Mobile Video Studio
+  ASPUPSCALE NEON X • VIDEO ENHANCEMENT STUDIO
 </footer>
 
 <script type="module">
 
 import { FFmpeg } from
-  "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/index.js";
+"https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/index.js";
 
 import { toBlobURL } from
-  "https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/dist/esm/index.js";
+"https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.2/dist/esm/index.js";
 
-const input = document.getElementById("videoInput");
-const preview = document.getElementById("preview");
-const uploadZone = document.getElementById("uploadZone");
-const fileInfo = document.getElementById("fileInfo");
-const button = document.getElementById("upscaleButton");
-const status = document.getElementById("status");
-const download = document.getElementById("download");
-const progressBox = document.getElementById("progressBox");
-const progressFill = document.getElementById("progressFill");
-const progressText = document.getElementById("progressText");
+const $ = id => document.getElementById(id);
+
+const input = $("videoInput");
+const uploadZone = $("uploadZone");
+const preview = $("preview");
+const fileInfo = $("fileInfo");
+const enhanceButton = $("enhanceButton");
+const progressPanel = $("progressPanel");
+const progressRing = $("progressRing");
+const progressNumber = $("progressNumber");
+const progressFill = $("progressFill");
+const status = $("status");
+const download = $("download");
 
 let selectedFile = null;
 let selectedHeight = 1080;
 let ffmpeg = null;
-let videoURL = null;
+let previewURL = null;
 let outputURL = null;
+let processing = false;
 
-uploadZone.addEventListener("click", () => {
-  input.click();
-});
+function setProgress(value) {
+  const percent = Math.max(0, Math.min(100, value));
 
-document.querySelectorAll(".resolution").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".resolution")
-      .forEach(b => b.classList.remove("active"));
+  progressNumber.textContent = Math.round(percent) + "%";
+  progressFill.style.width = percent + "%";
+  progressRing.style.setProperty(
+    "--progress",
+    percent + "%"
+  );
+}
 
-    btn.classList.add("active");
-    selectedHeight = Number(btn.dataset.height);
-  });
-});
+function setStatus(message) {
+  status.textContent = message;
+}
 
-function clearVideo() {
-  selectedFile = null;
-  input.value = "";
+function clearPreview() {
   preview.pause();
   preview.removeAttribute("src");
   preview.load();
   preview.style.display = "none";
-  fileInfo.textContent = "";
 
-  if (videoURL) {
-    URL.revokeObjectURL(videoURL);
-    videoURL = null;
+  if (previewURL) {
+    URL.revokeObjectURL(previewURL);
+    previewURL = null;
   }
 }
 
-input.addEventListener("change", async () => {
-  const file = input.files[0];
-
-  if (!file) return;
-
-  clearVideo();
-
-  // Assign after clearVideo resets the input.
-  selectedFile = file;
+function clearDownload() {
+  download.style.display = "none";
 
   if (outputURL) {
     URL.revokeObjectURL(outputURL);
     outputURL = null;
   }
+}
 
-  download.style.display = "none";
-  progressBox.style.display = "none";
-  status.textContent = "Checking video duration...";
+function resetSelection() {
+  selectedFile = null;
+  input.value = "";
+  fileInfo.textContent = "";
+  clearPreview();
+  clearDownload();
+}
 
-  videoURL = URL.createObjectURL(file);
-  preview.src = videoURL;
+function openPicker() {
+  if (!processing) input.click();
+}
+
+uploadZone.addEventListener("click", openPicker);
+
+uploadZone.addEventListener("keydown", event => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    openPicker();
+  }
+});
+
+uploadZone.addEventListener("dragover", event => {
+  event.preventDefault();
+  uploadZone.classList.add("dragging");
+});
+
+uploadZone.addEventListener("dragleave", () => {
+  uploadZone.classList.remove("dragging");
+});
+
+uploadZone.addEventListener("drop", event => {
+  event.preventDefault();
+  uploadZone.classList.remove("dragging");
+
+  if (processing) return;
+
+  const file = event.dataTransfer.files[0];
+  if (file) selectVideo(file);
+});
+
+input.addEventListener("change", () => {
+  const file = input.files[0];
+  if (file) selectVideo(file);
+});
+
+async function selectVideo(file) {
+  if (processing) return;
+
+  resetSelection();
+
+  progressPanel.style.display = "block";
+  setProgress(0);
+  setStatus("Analyzing video...");
+
+  if (!file.type.startsWith("video/")) {
+    setStatus("❌ Please select a video file.");
+    return;
+  }
+
+  const url = URL.createObjectURL(file);
+  previewURL = url;
+  preview.src = url;
 
   try {
     const duration = await new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        reject(new Error("Could not read video duration."));
+      const timer = setTimeout(() => {
+        reject(new Error("Could not read video metadata."));
       }, 15000);
 
       preview.onloadedmetadata = () => {
-        clearTimeout(timeout);
+        clearTimeout(timer);
         resolve(preview.duration);
       };
 
       preview.onerror = () => {
-        clearTimeout(timeout);
-        reject(new Error("Unsupported video format."));
+        clearTimeout(timer);
+        reject(new Error("Unsupported video."));
       };
     });
 
@@ -474,157 +1018,211 @@ input.addEventListener("change", async () => {
 
     if (duration > 90) {
       throw new Error(
-        "Videos must be 1 minute and 30 seconds or shorter."
+        "Videos longer than 1 minute 30 seconds are not allowed."
       );
     }
+
+    selectedFile = file;
 
     preview.style.display = "block";
 
     fileInfo.textContent =
-      file.name + " • " +
-      duration.toFixed(1) + " seconds • " +
-      (file.size / 1024 / 1024).toFixed(1) + " MB";
+      "✓ " + file.name +
+      " • " + duration.toFixed(1) + " sec" +
+      " • " + (file.size / 1048576).toFixed(1) + " MB";
 
-    status.textContent = "✅ Video ready to enhance!";
+    setStatus("✓ Video verified. Ready for enhancement.");
 
   } catch (error) {
-    clearVideo();
-    status.textContent = "❌ " + error.message;
+    resetSelection();
+    setStatus("❌ " + error.message);
   }
+}
+
+document.querySelectorAll(".resolution").forEach(button => {
+  button.addEventListener("click", () => {
+    if (processing) return;
+
+    document.querySelectorAll(".resolution").forEach(b => {
+      b.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    selectedHeight = Number(button.dataset.height);
+  });
 });
 
-async function loadEngine() {
+async function loadFFmpeg() {
   if (ffmpeg) return ffmpeg;
 
-  status.textContent = "Loading video processing engine...";
+  setStatus("Loading video engine...");
 
   const engine = new FFmpeg();
 
   engine.on("progress", ({ progress }) => {
-    const percent = Math.max(
-      0,
-      Math.min(99, Math.round(progress * 100))
-    );
-
-    progressFill.style.width = percent + "%";
-    progressText.textContent = percent + "% processed";
+    if (Number.isFinite(progress)) {
+      setProgress(Math.min(99, Math.max(0, progress * 100)));
+    }
   });
 
-  const baseURL =
+  const base =
     "https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/umd";
 
-  await engine.load({
-    coreURL: await toBlobURL(
-      `${baseURL}/ffmpeg-core.js`,
-      "text/javascript"
-    ),
-    wasmURL: await toBlobURL(
-      `${baseURL}/ffmpeg-core.wasm`,
-      "application/wasm"
-    )
-  });
+  // The FFmpeg worker must be created from a same-origin
+  // URL. A Blob URL can bootstrap the CDN module worker.
+  const workerSource =
+    'import "https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/worker.js";';
+
+  const workerURL = URL.createObjectURL(
+    new Blob([workerSource], {
+      type:"text/javascript"
+    })
+  );
+
+  try {
+    await engine.load({
+      classWorkerURL:workerURL,
+      coreURL:await toBlobURL(
+        `${base}/ffmpeg-core.js`,
+        "text/javascript"
+      ),
+      wasmURL:await toBlobURL(
+        `${base}/ffmpeg-core.wasm`,
+        "application/wasm"
+      )
+    });
+  } finally {
+    URL.revokeObjectURL(workerURL);
+  }
 
   ffmpeg = engine;
   return engine;
 }
 
-button.addEventListener("click", async () => {
+enhanceButton.addEventListener("click", async () => {
+  if (processing) return;
+
   if (!selectedFile) {
-    status.textContent = "❌ Upload a valid video first.";
+    progressPanel.style.display = "block";
+    setStatus("❌ Select a valid video first.");
     return;
   }
 
-  button.disabled = true;
-  progressBox.style.display = "block";
-  progressFill.style.width = "0%";
-  progressText.textContent = "Preparing...";
-  download.style.display = "none";
+  processing = true;
+  enhanceButton.disabled = true;
+  enhanceButton.textContent = "⚡ PROCESSING...";
+  input.disabled = true;
+
+  document.querySelectorAll(
+    ".resolution, #sharpness, #quality"
+  ).forEach(el => el.disabled = true);
+
+  clearDownload();
+
+  progressPanel.style.display = "block";
+  setProgress(0);
+  setStatus("Preparing enhancement engine...");
+
+  let engine = null;
+  const inputName = "source_video";
+  const outputName = "enhanced.mp4";
 
   try {
-    const engine = await loadEngine();
+    engine = await loadFFmpeg();
 
-    const sharpness =
-      document.getElementById("sharpness").value;
+    const sharpness = Number($("sharpness").value);
+    const quality = $("quality").value;
 
-    const quality =
-      document.getElementById("quality").value;
+    const filterParts = [
+      `scale=-2:${selectedHeight}:flags=lanczos`,
+      "setsar=1"
+    ];
 
-    const inputName = "input_video";
-    const outputName = "enhanced.mp4";
+    if (sharpness > 0) {
+      filterParts.push(
+        `unsharp=5:5:${sharpness}:5:5:0`
+      );
+    }
 
-    status.textContent = "Reading video...";
+    setStatus("Loading your video into memory...");
 
     await engine.writeFile(
       inputName,
       new Uint8Array(await selectedFile.arrayBuffer())
     );
 
-    let filter =
-      `scale=-2:${selectedHeight}:flags=lanczos,setsar=1`;
-
-    if (Number(sharpness) > 0) {
-      filter += `,unsharp=5:5:${sharpness}:5:5:0`;
-    }
-
-    status.textContent =
-      "⚡ Enhancing video. Keep this page open.";
+    setStatus(
+      "Enhancing video. Keep this page open."
+    );
 
     const exitCode = await engine.exec([
-      "-i", inputName,
-      "-vf", filter,
-      "-c:v", "libx264",
-      "-preset", "ultrafast",
-      "-crf", quality,
-      "-pix_fmt", "yuv420p",
-      "-c:a", "aac",
-      "-b:a", "128k",
-      "-movflags", "+faststart",
+      "-i",inputName,
+      "-vf",filterParts.join(","),
+      "-c:v","libx264",
+      "-preset","ultrafast",
+      "-crf",quality,
+      "-pix_fmt","yuv420p",
+      "-c:a","aac",
+      "-b:a","128k",
+      "-movflags","+faststart",
       outputName
     ]);
 
     if (exitCode !== 0) {
-      throw new Error("Video encoding failed.");
+      throw new Error(
+        "Video encoding failed. The required codec may not be available."
+      );
     }
+
+    setStatus("Finalizing video...");
 
     const data = await engine.readFile(outputName);
 
     if (!data.length) {
-      throw new Error("The output video is empty.");
+      throw new Error("Output file is empty.");
     }
 
     const blob = new Blob(
       [data],
-      { type: "video/mp4" }
+      {type:"video/mp4"}
     );
-
-    if (outputURL) {
-      URL.revokeObjectURL(outputURL);
-    }
 
     outputURL = URL.createObjectURL(blob);
 
     download.href = outputURL;
-    download.download = "AspUpscale_Enhanced.mp4";
+    download.download = "AspUpscale_NeonX.mp4";
     download.style.display = "block";
 
-    progressFill.style.width = "100%";
-    progressText.textContent = "100% complete";
-
-    status.textContent =
-      "✅ Enhancement complete! Your video is ready.";
-
-    await engine.deleteFile(inputName);
-    await engine.deleteFile(outputName);
+    setProgress(100);
+    setStatus("✓ Enhancement complete. Video ready!");
 
   } catch (error) {
     console.error(error);
 
-    status.textContent =
-      "❌ Processing failed: " + error.message +
-      " Try a shorter video or lower resolution.";
-
+    setStatus(
+      "❌ " + error.message +
+      " Try a shorter video or lower resolution."
+    );
   } finally {
-    button.disabled = false;
+    if (engine) {
+      try {
+        await engine.deleteFile(inputName);
+      } catch {}
+
+      try {
+        await engine.deleteFile(outputName);
+      } catch {}
+    }
+
+    processing = false;
+    input.disabled = false;
+    enhanceButton.disabled = false;
+    enhanceButton.textContent =
+      "✦ INITIATE ENHANCEMENT →";
+
+    document.querySelectorAll(
+      ".resolution, #sharpness, #quality"
+    ).forEach(el => el.disabled = false);
   }
 });
 
